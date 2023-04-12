@@ -8,6 +8,9 @@ const xss = require('xss-clean');
 const rateLimiter = require('express-rate-limit');
 
 // Swagger
+const swaggerUI = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./swagger.yaml');
 
 const express = require('express');
 const app = express();
@@ -36,6 +39,7 @@ app.use(xss());
 app.get('/', (req, res) => {
   res.send('<h1>Jobs API</h1><a href="/api-docs">Documentation</a>');
 });
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // routes
 app.use('/api/v1/auth', authRouter);
